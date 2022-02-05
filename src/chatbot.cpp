@@ -44,6 +44,74 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE
 ////
+// copy constructor
+ChatBot::ChatBot(const ChatBot &other) 
+{
+  std::cout << "ChatBot Copy Constructor" << std::endl;
+
+  // make copies of the existing raw pointers
+  // no need to worry about sharing address since chatbot does not own nodes and chatLogic
+  _image = other._image;
+  _currentNode = other._currentNode;
+  _rootNode = other._rootNode;
+  _chatLogic = other._chatLogic;
+  _chatLogic->SetChatbotHandle(this); // need to redirect the chatLogic to the current chatBot
+}
+
+// copy assignment operator
+ChatBot &ChatBot::operator=(const ChatBot &other) 
+{
+  std::cout << "ChatBot Copy Assignment" << std::endl;
+
+  if (this != &other) 
+  {
+    _image = other._image; 
+    // no need to delete the old image in copy/move assigments since there is only one image passed around nodes
+    _currentNode = other._currentNode;
+    _rootNode = other._rootNode;
+    _chatLogic = other._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+  }
+  return *this;
+}
+
+// move constructor
+ChatBot::ChatBot(ChatBot &&other)
+{
+    std::cout << "ChatBot Move Constructor" << std::endl;
+
+    _image = other._image;
+    _currentNode = other._currentNode;
+    _rootNode = other._rootNode;
+    _chatLogic = other._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
+
+    other._image = NULL;
+    other._currentNode = nullptr;
+    other._rootNode = nullptr;
+    other._chatLogic = nullptr;
+}
+
+// move assignment operator
+ChatBot &ChatBot::operator=(ChatBot &&other)
+{
+    std::cout << "ChatBot Move Assignment" << std::endl;
+
+    if (this != &other)
+    {
+        _image = other._image;
+        _currentNode = other._currentNode;
+        _rootNode = other._rootNode;
+        _chatLogic = other._chatLogic;
+        _chatLogic->SetChatbotHandle(this);
+
+        other._image = NULL;
+        other._currentNode = nullptr;
+        other._rootNode = nullptr;
+        other._chatLogic = nullptr;
+    }
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE
