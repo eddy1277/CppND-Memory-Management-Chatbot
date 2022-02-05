@@ -49,9 +49,9 @@ ChatBot::ChatBot(const ChatBot &other)
 {
   std::cout << "ChatBot Copy Constructor" << std::endl;
 
+  _image = new wxBitmap(*(other._image));
   // make copies of the existing raw pointers
   // no need to worry about sharing address since chatbot does not own nodes and chatLogic
-  _image = other._image;
   _currentNode = other._currentNode;
   _rootNode = other._rootNode;
   _chatLogic = other._chatLogic;
@@ -65,8 +65,11 @@ ChatBot &ChatBot::operator=(const ChatBot &other)
 
   if (this != &other) 
   {
-    _image = other._image; 
-    // no need to delete the old image in copy/move assigments since there is only one image passed around nodes
+    if (_image)
+    {
+        delete _image;
+    }
+    _image = new wxBitmap(*(other._image));
     _currentNode = other._currentNode;
     _rootNode = other._rootNode;
     _chatLogic = other._chatLogic;
